@@ -1,0 +1,91 @@
+<pm:html>
+	<pm:head>
+		<title>@{typef_title}@ - Admin - Skins</title>
+		<pm:scriptonce type="text/javascript" src="~fs/jquery/jquery.js" />
+		<script type="text/javascript">
+			$(function() {
+				$('#mobile_checkbox').change(function() {
+					if($(this).is(':checked')) {
+						$.post('@{typef_app_dir}@/mobile', {enable:1});
+						$('#skintable .mobile').show();
+					} else {
+						$.post('@{typef_app_dir}@/mobile', {enable:0});
+						$('#skintable .mobile').hide();
+					}
+				});
+				if ($('#mobile_checkbox').is(':checked')) {
+					$('#skintable .mobile').show();
+				} else {
+					$('#skintable .mobile').hide();
+				}
+			});
+		</script>
+	</pm:head>
+	<pm:body>
+		<h2>
+			Skins
+		</h2>
+		<pm:if expr="count(skins)">
+			<label>
+				<pm:checkbox name="typef_use_mobile_skins" value="1" checked="@{typef_use_mobile_skins}@" id="mobile_checkbox" />
+				Enable mobile skins
+			</label>
+			<div style="min-width: 200px; max-width: 600px; margin: 0 auto;">
+			<table id="skintable" class="table table-bordered">
+				<tr>
+					<th>
+						Skin
+					</th>
+					<th style="text-align:center;">
+						<small>Site <span class="mobile">(Full)</span></small>
+					</th>
+					<th style="text-align:center;">
+						<small>Admin <span class="mobile">(Full)</span></small>
+					</th>
+					<th style="text-align:center;" class="mobile">
+						<small>Site (Mobile)</small>
+					</th>
+					<th style="text-align:center;" class="mobile">
+						<small>Admin (Mobile)</small>
+					</th>
+					<th></th>
+				</tr>
+				<pm:loop name="skins">
+					<tr>
+						<td>
+							<pm:choose>
+								<pm:when expr="(skin == typef_site_skin) || (skin == typef_admin_skin)">
+									<span class="label label-info">@{skin}@</span>
+								</pm:when>
+								<pm:otherwise>
+									@{skin}@
+								</pm:otherwise>
+							</pm:choose>
+						</td>
+						<td align="center" style="text-align:center;">
+							<pm:if expr="skin == typef_site_skin"><a href="#" class="btn btn-success btn-small"><i class="iconic-check"></i></a></pm:if>
+							<pm:if expr="skin != typef_site_skin"><a href="~a/?config=TYPEF_SITE_SKIN&amp;skin=@{skin}@" pm:method="post" class="btn btn-mini">Select</a></pm:if>
+						</td>
+						<td align="center" style="text-align:center;">
+							<pm:if expr="skin == typef_admin_skin"><a href="#" class="btn btn-success btn-small"><i class="iconic-check"></i></a></pm:if>
+							<pm:if expr="skin != typef_admin_skin"><pm:postlink href="~a/?config=TYPEF_ADMIN_SKIN&amp;skin=@{skin}@" class="btn btn-mini">Select</pm:postlink></pm:if>
+						</td>
+						<td align="center" style="text-align:center;" class="mobile">
+							<pm:if expr="skin == typef_mobile_site_skin"><a href="#" class="btn btn-success btn-small"><i class="iconic-check"></i></a></pm:if>
+							<pm:if expr="skin != typef_mobile_site_skin"><a href="~a/?config=TYPEF_MOBILE_SITE_SKIN&amp;skin=@{skin}@" pm:method="post" class="btn btn-mini">Select</a></pm:if>
+						</td>
+						<td align="center" style="text-align:center;" class="mobile">
+							<pm:if expr="skin == typef_mobile_admin_skin"><a href="#" class="btn btn-success btn-small"><i class="iconic-check"></i></a></pm:if>
+							<pm:if expr="skin != typef_mobile_admin_skin"><pm:postlink href="~a/?config=TYPEF_MOBILE_ADMIN_SKIN&amp;skin=@{skin}@" class="btn btn-mini">Select</pm:postlink></pm:if>
+						</td>
+						<td style="text-align:right;">
+							<a href="@{typef_web_dir}@/admin/plugins?skin=@{skin}@" class="btn btn-mini">Manage Plugins</a>
+							<!--@<a href="@{typef_web_dir}@/admin/skins/styles?skin=@{skin}@"><img src="@{skin_path('/buttons/css.png')}@" alt="Stylesheets" title="Stylesheets" /></a>@-->
+						</td>
+					</tr>
+				</pm:loop>
+			</table>
+			</div>
+		</pm:if>
+	</pm:body>
+</pm:html>

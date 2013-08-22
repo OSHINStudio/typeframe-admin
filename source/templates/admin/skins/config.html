@@ -1,0 +1,73 @@
+<pm:html>
+	<pm:head>
+		<title>Configure Skin</title>
+		<link rel="stylesheet" type="text/css" href="@{typef_web_dir}@/files/static/colorpicker/style.css" />
+	</pm:head>
+	<pm:body>
+		<h2>
+			Configure @{skin}@
+		</h2>
+		<form action="@{typef_web_dir}@/admin/skins/config" method="post">
+			<input type="hidden" name="cmd" value="config-update" />
+			<input type="hidden" name="skin" value="@{skin}@" />
+			<table class="fieldset">
+				<pm:loop name="items">
+					<tr>
+						<td>
+							@{caption}@
+						</td>
+						<td>
+							<pm:choose>
+								<pm:when expr="type == 'color'">
+									<input type="text" id="@{configname}@" name="@{configname}@" value="@{configvalue}@" class="color {hash:true, required:false}" />
+									<pm:scriptonce type="text/javascript" src="@{typef_web_dir}@/files/static/jscolor/jscolor.js"></pm:scriptonce>
+								</pm:when>
+								<pm:otherwise>
+									<pm:select name="@{configname}@" selected="@{configvalue}@">
+										<option value=""></option>
+										<option value="monospace">Monospace</option>
+										<option value="sans-serif">Sans-Serif</option>
+										<option value="serif">Serif</option>
+										<option value="cursive">Cursive</option>
+										<option value="fantasy">Fantasy</option>
+										<option value="Arial">Arial</option>
+										<option value="Arial Black">Arial Black</option>
+										<option value="Book Antiqua">Book Antiqua</option>
+										<option value="Charcoal">Charcoal</option>
+										<option value="Comic Sans MS">Comic Sans MS</option>
+										<option value="Courier">Courier</option>
+										<option value="Courier New">Courier New</option>
+										<option value="Gadget">Gadget</option>
+										<option value="Geneva">Geneva</option>
+										<option value="Georgia">Georgia</option>
+										<option value="Helvetica">Helvetica</option>
+										<option value="Impact">Impact</option>
+										<option value="Lucida Console">Lucida Console</option>
+										<option value="Lucida Grande">Lucida Grande</option>
+										<option value="Lucida Sans Unicode">Lucida Sans Unicode</option>
+										<option value="Monaco">Monaco</option>
+										<option value="MS Sans Serif">MS Sans Serif</option>
+										<option value="MS Serif">MS Serif</option>
+										<option value="New York">New York</option>
+										<option value="Palatino">Palatino</option>
+										<option value="Palatino Linotype">Palatino Linotype</option>
+										<option value="Tahoma">Tahoma</option>
+										<option value="Times">Times</option>
+										<option value="Times New Roman">Times New Roman</option>
+										<option value="Trebuchet MS">Trebuchet MS</option>
+										<option value="Verdana">Verdana</option>
+									</pm:select>
+								</pm:otherwise>
+							</pm:choose>
+						</td>
+					</tr>
+				</pm:loop>
+			</table>
+			<input type="submit" name="btn" value="Update" />
+			<label>
+				<pm:checkbox name="continue" value="1" checked="@{continue}@" />
+				<small>Return to this page</small>
+			</label>
+		</form>
+	</pm:body>
+</pm:html>

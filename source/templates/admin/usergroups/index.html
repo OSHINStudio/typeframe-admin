@@ -1,0 +1,36 @@
+<pm:html xmlns:pm="http://typeframe.com/pagemill">
+	<pm:head>
+		<title>@{typef_title}@ - Admin - User Groups</title>
+	</pm:head>
+	<pm:body>
+		<h2>
+			User Groups
+		</h2>
+
+		<p>
+			<a href="@{typef_web_dir}@/admin/usergroups/add">Add User Group</a>
+		</p>
+
+		<table>
+			<tr>
+				<th>
+					Group Name
+				</th>
+				<th>
+					&nbsp;
+				</th>
+			</tr>
+			<pm:loop name="usergroups">
+			<tr>
+				<td>
+					@{usergroupname}@
+				</td>
+				<td>
+					<a href="@{typef_web_dir}@/admin/usergroups/edit?usergroupid=@{usergroupid}@">Edit</a>
+					<pm:postlink href="@{typef_web_dir}@/admin/usergroups/delete?usergroupid=@{usergroupid}@" confirm="Are you sure you want to delete this user group?">Delete</pm:postlink>
+				</td>
+			</tr>
+			</pm:loop>
+		</table>
+	</pm:body>
+</pm:html>

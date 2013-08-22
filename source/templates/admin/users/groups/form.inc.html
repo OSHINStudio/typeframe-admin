@@ -1,0 +1,20 @@
+<form action="@{typef_request_path}@" method="post">
+	<input type="hidden" name="usergroupid" value="@{usergroup->usergroupid}@" />
+	<table class="fieldset">
+		<tr>
+			<td>Group Name</td>
+			<td><input type="text" name="usergroupname" value="@{usergroup->usergroupname}@" /></td>
+		</tr>
+		<tr pm:if="count(applications)">
+			<td>Admin Access</td>
+			<td>
+				<select id="usergroup-admin" name="admin[]" size="10" multiple="multiple">
+					<option pm:loop="applications" value="@{application}@"><pm:attribute
+						name="selected"><pm:if expr="in_array(application, admin_applications)">selected</pm:if></pm:attribute>@{title}@</option>
+				</select>
+				<div><a href="#" id="clear-admin">Clear All</a></div>
+			</td>
+		</tr>
+	</table>
+	<input type="submit" value="@{usergroup->usergroupid ? 'Update' : 'Add'}@" />
+</form>

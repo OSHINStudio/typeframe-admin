@@ -1,0 +1,38 @@
+<pm:html>
+	<pm:head>
+		<title>FTP Login</title>
+	</pm:head>
+	<pm:body>
+		<h2>
+			<a href="@{typef_web_dir}@/admin">Admin</a> &gt;
+			FTP Login Required
+		</h2>
+		<pm:if expr="count(errors)">
+			<pm:loop name="errors">
+				<p>
+					<strong>@{message}@</strong>
+				</p>
+			</pm:loop>
+		</pm:if>
+		<pm:if expr="!count(errors)">
+			<p>
+				Please confirm your FTP login to continue.
+			</p>
+		</pm:if>
+		<form action="@{typef_web_dir}@/admin/ftp/login" method="post" class="login">
+			<input type="hidden" name="cmd" value="login" />
+			<input type="hidden" name="redirect" value="@{redirect}@" />
+			<label>
+				<span>User Name</span>
+				<input type="text" name="username" class="text" />
+			</label>
+			<label>
+				<span>Password</span>
+				<input type="password" name="password" class="text" />
+			</label>
+			<fieldset class="buttons">
+				<input type="submit" class="submit" name="btn" value="Log In" />
+			</fieldset>
+		</form>
+	</pm:body>
+</pm:html>

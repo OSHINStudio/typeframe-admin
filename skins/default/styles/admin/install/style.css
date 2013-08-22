@@ -1,0 +1,9 @@
+#packages .package {
+	margin-left: 2em;
+}
+#packages .package h3 {
+	margin-left: -2em;
+}
+#packages .package form {
+	margin: 0.5em 0 0.5em 0;
+}

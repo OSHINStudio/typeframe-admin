@@ -1,0 +1,10 @@
+<div class="xadmin-category-container">
+	<ul pm:if="count(categories)" class="xadmin-category">
+		<li pm:loop="categories">
+			@{name}@
+			<ul>
+				<li pm:loop="applications"><a href="@{uri}@">@{title}@</a></li>
+			</ul>
+		</li>
+	</ul>
+</div>

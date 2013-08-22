@@ -1,0 +1,51 @@
+<pm:html xmlns:pm="http://typeframe.com/pagemill">
+	<pm:head>
+		<title>@{typef_title}@ - Admin - Users</title>
+	</pm:head>
+	<pm:body>
+		<h2>Users</h2>
+		<p>There are currently @{usersonline}@ users online.</p>
+		<p><a href="~a/groups">Manage User Groups</a></p>
+		<p><a href="~a/add">Add New User</a></p>
+		<form method="get">
+			<pm:select name="searchfield" selected="@{searchfield}@">
+				<option value="username">User name</option>
+				<option value="email">Email</option>
+			</pm:select>
+			<pm:select name="searchrange" selected="@{searchrange}@">
+				<option value="contains">contains</option>
+				<option value="starts">starts with</option>
+			</pm:select>
+			<input type="text" name="searchquery" value="@{searchquery}@" class="text" />
+			<input type="submit" name="btn" value="Search" class="submit" />
+		</form>
+		<pm:if expr="searched">
+			<p>Your search returned @{totalresults}@ results. <a href="~a/">Clear search</a></p>
+		</pm:if>
+		<pm:else>
+			<p>@{totalresults}@ total users.</p>
+		</pm:else>
+		<pm:if expr="count(users)">
+			<pm:include template="pagination.inc.html" />
+			<table>
+				<tr><th>User Name</th><th>Email</th><th>First Name</th><th>Last Name</th><th>Group</th><th>Last Seen</th><th>&#160;</th></tr>
+				<tr pm:loop="users">
+					<td><pm:if expr="!confirmed">*</pm:if>@{username}@</td>
+					<td>@{email}@</td>
+					<td>@{firstname}@</td>
+					<td>@{lastname}@</td>
+					<td>@{usergroup->usergroupname}@</td>
+					<td><pm:if expr="lastrequest">@{default_date_time(lastrequest)}@</pm:if><pm:else>Never</pm:else></td>
+					<td><a href="~a/edit?userid=@{userid}@"><img src="@{skin_path('/buttons/edit.png')}@" alt="Edit" title="Edit" /></a>
+						<pm:postlink href="~a/delete?userid=@{userid}@" confirm="Are you sure you want to delete this user?"><img
+							src="@{skin_path('/buttons/delete.png')}@" alt="Delete" title="Delete" /></pm:postlink></td>
+				</tr>
+			</table>
+			<p><small>Unconfirmed accounts are flagged with an asterisk (*).</small></p>
+			<pm:include template="pagination.inc.html" />
+		</pm:if>
+		<pm:else>
+			<p>There are no users in the database.</p>
+		</pm:else>
+	</pm:body>
+</pm:html>

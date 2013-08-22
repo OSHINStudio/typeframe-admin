@@ -1,0 +1,16 @@
+<nav class="adminbar">
+	<ul class="">
+		<pm:loop name="applications" as="app">
+			<pm:if expr="app->uri == typef_page_uri">
+				<li class="active">
+					<a href="@{app->uri}@">@{app->title}@</a>
+				</li>
+			</pm:if>
+			<pm:else>
+				<li>
+					<a href="@{app->uri}@">@{app->title}@</a>
+				</li>		
+			</pm:else>
+		</pm:loop>
+	</ul>
+</nav>

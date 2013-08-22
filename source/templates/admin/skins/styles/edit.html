@@ -1,0 +1,27 @@
+<pm:html>
+	<pm:head>
+		<title>Admin - Skins - Styles</title>
+		<pm:scriptonce type="text/javascript" src="@{typef_web_dir}@/files/static/js/prototype.js"></pm:scriptonce>
+		<pm:scriptonce type="text/javascript" src="@{typef_web_dir}@/files/static/js/selrange.js"></pm:scriptonce>
+		<pm:scriptonce type="text/javascript" src="@{typef_web_dir}@/files/static/js/tabentry.js"></pm:scriptonce>
+		<pm:scriptonce type="text/javascript" src="@{typef_web_dir}@/files/static/js/cookie.js"></pm:scriptonce>
+	</pm:head>
+	<pm:body>
+		<h2>
+			Edit (skin/stylesheet)
+		</h2>
+		<p>
+			<label>
+				<input type="checkbox" id="tabentry" /> Enter tabs
+			</label>
+		</p>
+		<form action="" method="post">
+			<input type="hidden" name="cmd" value="stylesheet-update" />
+			<input type="hidden" name="skin" value="@{skin}@" />
+			<input type="hidden" name="stylesheet" value="@{stylesheet}@" />
+			<textarea id="source" name="source" cols="80" rows="20">@{source}@</textarea>
+			<input type="submit" name="btn" value="Update" />
+		</form>
+		<script>TabEntry.enable('source', 'tabentry');</script>
+	</pm:body>
+</pm:html>

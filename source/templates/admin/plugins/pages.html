@@ -1,0 +1,115 @@
+<pm:html>
+	<pm:head>
+		<title>Plugins</title>
+		<pm:scriptonce type="text/javascript" src="@{typef_web_dir}@/files/static/jquery/jquery.js"></pm:scriptonce>
+	</pm:head>
+	<pm:body>
+		<h2>
+			<pm:if expr="plugin->plugname">@{plugname}@</pm:if><pm:else>Unnamed Plug #@{plugin->plugid}@</pm:else> (@{plugin->plug}@)
+		</h2>
+		<p>
+			Select the pages where you want to insert this plugin into the <strong>@{plugin->socket}@</strong> socket of the <strong>@{plugin->skin}@</strong> skin.
+		</p>
+		<form method="post">
+			<input type="hidden" name="locid" value="@{plugin->locid}@" />
+			<label>
+				<input type="checkbox" id="allpages" name="allpages" value="1" pm:checked="@{allpages}@" />
+				All Pages
+			</label>
+			<div id="listform">
+				<ul id="rulelist">
+					<pm:loop name="rules" as="rule">
+						<li>
+							<input type="hidden" name="rules[]" value="@{rule->code}@" />
+							@{rule->description}@
+							<a href="#" onclick="$(this).parent().remove(); return false;">X</a>
+						</li>				
+					</pm:loop>
+				</ul>
+				<select id="directive" name="new[directive]">
+					<option value="">Include on</option>
+					<option value="!">Exclude from</option>
+				</select>
+				<select id="location" name="new[location]">
+					<option value="pid:">page:</option>
+					<option value="url:">URL:</option>
+					<pm:if expr="typef_ent">
+						<option value="child:">@{typef_ent_child_name}@:</option>
+					</pm:if>
+				</select>
+				<select id="pageid" name="new[pageid]">
+					<pm:loop name="pages" as="page">
+						<option value="@{page->pageid}@">@{page->nickname ? page->nickname : page->uri}@</option>
+					</pm:loop>
+				</select>
+				<pm:if expr="typef_ent">
+					<select id="childid" naem="new[childid]">
+						<pm:loop name="children" as="child">
+							<option value="@{child->id}@">@{child->name}@</option>
+						</pm:loop>
+					</select>
+				</pm:if>
+				<input id="url" type="text" name="url" />
+				<button id="add" type="button">Add</button>
+			</div>
+			
+			<div>
+				<input type="submit" name="btn" value="Update" />
+			</div>
+		</form>
+		<script type="text/javascript">
+			$('#allpages').click(function(evt) {
+				if ($('#allpages').is(':checked')) {
+					$('#listform').slideUp();
+				} else {
+					$('#listform').slideDown();
+				}
+			});
+			$('#location').change(function(evt) {
+				switch($('#location').val()){
+					case 'pid:':
+						$('#pageid').show();
+						$('#childid').hide();
+						$('#url').hide();
+						break;
+					case 'child:':
+						$('#pageid').hide();
+						$('#childid').show();
+						$('#url').hide();
+						break;
+					case 'url:':
+						$('#pageid').hide();
+						$('#childid').hide();
+						$('#url').show();
+						break;
+				}
+			});
+			$('#childid').hide();
+			$('#url').hide();
+			$('#add').click(function(evt) {
+				var exp = $('#directive').val() + $('#location').val();
+				var desc = ($('#directive').val() == '!')? 'Exclude from ' : 'Include on ';
+				switch($('#location').val()){
+					case 'pid:':
+						exp += $('#pageid').val();
+						desc += $('#pageid option:selected').text();
+						break;
+					case 'child:':
+						exp += $('#childid').val();
+						desc += $('#childid option:selected').text();
+						break;
+					case 'url:':
+						exp += $('#url').val();
+						desc += $('#url').val();
+						break; 
+				}
+				
+				$('#rulelist').append('<li><input type="hidden" name="rules[]" value="' + exp + '" />' + desc + ' <a href="#" onclick="$(this).parent().remove(); return false;">X</a></li>');
+				$('#url').val('');
+			});
+			<pm:if expr="allpages">
+			$('#listform').hide();
+			</pm:if>
+		</script>
+	</pm:body>
+</pm:html>

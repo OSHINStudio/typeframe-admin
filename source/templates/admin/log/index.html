@@ -1,0 +1,51 @@
+<pm:html>
+	<pm:head>
+		<title>Log</title>
+	</pm:head>
+	<pm:body>
+		<h2>
+			<a href="@{typef_web_dir}@/admin">Admin</a> &gt;
+			Log
+		</h2>
+		<pm:if expr="count(entries)">
+			<pm:include template="/pagination.inc.html" />
+			<table>
+				<tr>
+					<th>
+						Date
+					</th>
+					<th>
+						User
+					</th>
+					<th>
+						IP Address
+					</th>
+					<th>
+						Action
+					</th>
+				</tr>
+				<pm:loop name="entries">
+					<tr>
+						<td>
+							<pm:eval expr="default_date_time(logdate)" />
+						</td>
+						<td>
+							@{username}@
+						</td>
+						<td>
+							@{ipaddress}@
+						</td>
+						<td>
+							@{action}@
+						</td>
+					</tr>
+				</pm:loop>
+			</table>
+		</pm:if>
+		<pm:if expr="!count(entriesx)">
+			<p>
+				There are no entries in the log table.
+			</p>
+		</pm:if>
+	</pm:body>
+</pm:html>

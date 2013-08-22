@@ -1,0 +1,129 @@
+<pm:html>
+	<pm:head>
+		<title>Plugins</title>
+		<link rel="stylesheet" type="text/css" href="~s/styles/admin/plugins/style.css" />
+		<pm:scriptonce type="text/javascript" src="@{typef_web_dir}@/files/static/jquery/jquery.js"></pm:scriptonce>
+		<pm:scriptonce type="text/javascript" src="@{typef_web_dir}@/files/static/jquery/jquery-ui.js"></pm:scriptonce>
+	</pm:head>
+	<pm:body>
+		<h2>
+			Plugins
+			<a href="~/admin/plugins/add?skin=@{skin}@" class="btn btn-success"><i class="iconic-plus"></i> Create New 
+Plugin</a>
+		</h2>
+		<div id="admin_wrapper">
+			<div id="admin_plugins" class="span6">
+							<h3>Available Plugins</h3>
+				<div class="alert"><i class="icon-text">1</i> Click and hold on the plugin name to drag a plugin from the left column into a socket on the right column.</div>
+
+				<ul>
+					<pm:loop name="plugins" as="p">
+						<li title="@{p->name}@">
+							<span class="plugdef">
+								<input class="plugid" type="hidden" name="plugid" value="@{p->plugid}@" />
+								<pm:if expr="p->name">@{p->name}@</pm:if><pm:else>Unnamed Plugin</pm:else>
+								<small>(@{p->plug}@)</small>
+							</span>
+							<div class="btns">
+								<a href="@{typef_web_dir}@/admin/plugins/edit?plugid=@{p->plugid}@&amp;skin=@{skin}@" class="btn btn-warning btn-mini"><i class="iconic-cog"></i> Edit Settings</a>
+								<pm:postlink class="btn btn-danger btn-mini" 
+	href="@{typef_web_dir}@/admin/plugins/delete?plugid=@{p->plugid}@&amp;skin=@{skin}@" confirm="You are about to delete this plugin and remove it from 
+	all sockets where it is inserted.  Click OK to confirm."><i class="iconic-x"></i></pm:postlink>
+							</div>
+							<div class="clear"></div>
+						</li>
+					</pm:loop>
+				</ul>
+			</div>
+			<div id="admin_skin" class="span6">
+						<h3>Sockets</h3>
+			<div class="alert"><i class="icon-text">2</i> Drop the plugin into a socket, then manage on which pages it is displayed. Re-order by dragging and dropping.</div>
+
+				<form action="" method="get" class="form-horizontal bordered skins">
+					<div class="control-group">
+						<label class="control-label">Manage Plugins for Skin</label>
+						<div class="controls">
+							<pm:select id="selected_skin" name="skin" selected="@{skin}@">
+								<pm:loop name="skins" as="sk">
+									<option value="@{sk}@">@{sk}@</option>
+								</pm:loop>
+							</pm:select>
+						</div>
+					</div>
+				</form>
+				<pm:if expr="count(sockets)">
+					<ul class="sockets">
+						<pm:loop name="sockets" as="s">
+							<li class="socketdef well well-small">
+								<span class="socketname">@{s->socket}@</span>
+								<pm:if expr="count(s->plugins)">
+									<form action="@{typef_web_dir}@/admin/plugins/sort" method="post">
+										<input type="hidden" name="skin" value="@{skin}@" />
+										<input type="hidden" name="socket" value="@{s->socket}@" />
+										<ul>
+											<pm:loop name="s->plugins" as="p">
+												<li>
+													<input type="hidden" name="locid[]" value="@{p->locid}@" />
+													@{p->plugin->name}@
+													<small>(@{p->plugin->plug}@)</small>
+													<div class="btns">
+														<a href="@{typef_web_dir}@/admin/plugins/pages?locid=@{p->locid}@" class="btn btn-warning btn-mini"><i class="iconic-document-alt"></i> Pages</a>
+														<pm:postlink href="@{typef_web_dir}@/admin/plugins/remove?locid=@{p->locid}@&amp;skin=@{skin}@" title="Remove plugin from socket" class="btn btn-danger btn-mini"><i class="iconic-x"></i></pm:postlink></div>
+												</li>
+											</pm:loop>
+										</ul>
+									</form>
+								</pm:if>
+							</li>
+						</pm:loop>
+					</ul>
+				</pm:if>
+				<pm:else>
+					<p>
+						The @{skin}@ skin does not have any available sockets.
+					</p>
+				</pm:else>
+			</div>
+		</div>
+		<script type="text/javascript"><![CDATA[
+			$('#selected_skin').change(function(event) {
+				$(this).closest('form').submit();
+			});
+			var draggedOn = null;
+			$('.plugdef').draggable({
+				helper: 'clone',
+				drag: function(event, ui) {
+					$(ui.helper).addClass("ui-draggable-helper");
+					draggedOn = null;
+					$('.socketdef').each(function(i) {
+						s = $(this);
+						if ( (!draggedOn) && (ui.offset.left >= s.offset().left) && (ui.offset.left <= s.offset().left + s.outerWidth()) && (ui.offset.top >= s.offset().top) && (ui.offset.top <= s.offset().top + s.outerHeight()) ) {
+							draggedOn = s;
+							s.addClass('dropping');
+						} else {
+							s.removeClass('dropping');
+						}
+					});
+				},
+				stop: function(event, ui) {
+					if (draggedOn) {
+						//alert('I would add this plugin to ' + draggedOn.find('.socketname').text());
+						draggedOn.removeClass('dropping');
+						$.post('@{typef_web_dir}@/admin/plugins/insert', {
+							plugid: $(this).find('.plugid').val(),
+							skin: '@{skin}@',
+							socket: draggedOn.find('.socketname').text()
+						}, function(data) {
+							window.location.reload();
+						});
+					}
+				}
+			});
+			$('li.socketdef ul').sortable({
+				stop: function(event, ui) {
+					$(this).parent().submit();
+				}
+			});
+		]]></script>
+	</pm:body>
+</pm:html>

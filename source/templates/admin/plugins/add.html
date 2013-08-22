@@ -1,0 +1,28 @@
+<pm:html xmlns:pm="http://typeframe.com/pagemill">
+	<pm:head>
+		<title>@{typef_title}@ - Admin - Plugins</title>
+	</pm:head>
+	<pm:body>
+		<h2>
+			Add Plugin
+		</h2>
+		<form action="" method="post" class="form-horizontal well" style="float:left;">
+			<input type="hidden" name="skin" value="@{globals->request->skin}@" />
+						<div class="control-group">
+						<label class="control-label">Plugin</label>
+						<div class="controls">
+						<pm:select name="plug" selected="@{plug}@" id="pageform-application">
+							<pm:loop name="plugins">
+							<option value="@{name}@">@{name}@</option>
+							</pm:loop>
+						</pm:select>
+						</div>
+						</div>
+			<div id="settings"></div>
+			<p style="text-align:right;">
+			<input type="submit" name="btn" value="Add Plugin" class="btn btn-primary" />
+			</p>
+		</form>
+		<!--@<pm:include template="/admin/pages/load-settings.inc.html" />@-->
+	</pm:body>
+</pm:html>

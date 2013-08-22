@@ -1,0 +1,11 @@
+<h2>Config</h2>
+<div class="well" style="max-width: 340px; padding: 8px 0;">
+<ul class="nav nav-list">
+	<pm:loop name="admin_configs">
+		<li>
+			<a href="~/admin/config/edit?config=@{urlencode(name)}@">@{name}@</a>
+		</li>
+		<li class="divider"></li>
+	</pm:loop>
+</ul>
+</div>

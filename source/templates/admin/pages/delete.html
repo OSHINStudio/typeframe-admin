@@ -1,0 +1,15 @@
+<pm:html>
+	<pm:head>
+		<title>Delete Page</title>
+	</pm:head>
+	<pm:body>
+		<form action="~a/delete" method="post">
+			<input type="hidden" name="pageid" value="@{page->pageid}@" />
+			<p>
+				Are you sure you want to delete @{page->nickname}@?
+			</p>
+			<input type="submit" value="Delete" />
+			<a href="~a/">Cancel</a>
+		</form>
+	</pm:body>
+</pm:html>

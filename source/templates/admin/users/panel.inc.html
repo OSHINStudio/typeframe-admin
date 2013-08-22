@@ -1,0 +1,11 @@
+<h2>Users <div class="btn-group"><a href="~/admin/users" class="btn">Manage Users</a><a href="~/admin/users/groups" class="btn">Manage Groups</a></div></h2>
+<div class="clear" style="margin-bottom: 25px;"></div>
+<pm:if expr="count(admin_users->online) LT 2">
+	<p class="alert">You are the only user online.</p>
+</pm:if>
+<pm:else>
+	<p class="alert">
+		<strong>You are not alone.</strong> There are <span class="badge badge-info">@{count(admin_users->online)}@</span> other users online.
+	</p>
+</pm:else>
+

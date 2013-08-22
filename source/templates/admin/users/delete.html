@@ -1,0 +1,16 @@
+<pm:html>
+	<pm:head>
+		<title>Delete User</title>
+	</pm:head>
+	<pm:body>
+		<h2>
+			Delete User
+		</h2>
+		<form action="@{typef_request_path}@" method="post">
+			<input type="hidden" name="userid" value="@{user->userid}@" />
+			Delete @{user->username}@?
+			<input type="submit" value="Yes" />
+			<a href="~a/">Cancel</a>
+		</form>
+	</pm:body>
+</pm:html>

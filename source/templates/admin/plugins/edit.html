@@ -1,0 +1,25 @@
+<pm:html>
+	<pm:head>
+		<title>@{typef_title}@ - Admin - Plugins</title>
+		<pm:scriptonce src="@{typef_root_web_dir}@/files/static/jquery/jquery-ui.js"/>
+		<pm:scriptonce src="@{typef_root_web_dir}@/files/static/jquery/jquery.tablednd.js"/>
+		<pm:scriptonce src="@{typef_root_web_dir}@/files/static/jquery/jquery.readonly.js"/>
+		<pm:scriptonce src="@{typef_root_web_dir}@/files/static/jquery/jquery.json-min.js"/>
+		<pm:scriptonce src="@{typef_root_web_dir}@/files/static/jquery/jquery.dyneditable.js"/>
+		<pm:scriptonce src="@{typef_root_web_dir}@/files/static/jquery/jquery.form.js"/>
+	</pm:head>
+	<pm:body>
+		<h2>
+			Edit Plugin
+		</h2>
+		<!--@<pm:if expr="pluginsettings">
+			<pm:codeblock elements="*" attributes="*">@{pluginsettings}@</pm:codeblock>
+		</pm:if>
+		<pm:else>
+			<p class="error">
+				There are no settings to be configured for this plugin.
+			</p>
+		</pm:else>@-->
+		<pm:pluginadmin plugid="@{plugid}@" />
+	</pm:body>
+</pm:html>

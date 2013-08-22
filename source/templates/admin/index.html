@@ -1,0 +1,175 @@
+<pm:html>
+	<pm:head>
+
+		<title>@{typef_title}@ Admin | Powered by Blind Acre</title>
+		<pm:scriptonce src="~fs/jquery/jquery.js"></pm:scriptonce>
+		<pm:scriptonce src="~fs/jquery/jquery-ui.js"></pm:scriptonce>
+		<!--link rel="stylesheet" type="text/css" href="@{skin_path('/styles/jqueryui/base/ui.all.css')}@" /-->
+		<!--<link rel="stylesheet" type="text/css" href="@{skin_path('/styles/jqueryui/custom-theme/ui.all.css')}@" />-->
+		<style type="text/css">
+			#admin_index ul.pages {
+				overflow: hidden;
+				margin: 0;
+				padding: 0;
+			}
+			#admin_index ul.pages li {
+				list-style-type: none;
+				float: left;
+				border: 1px solid black;
+				margin: 1em;
+				padding: 4px;
+				width: 240px;
+			}
+			#admin_pages small {
+				font-size: 10pt;
+			}
+		</style>
+		<script type="text/javascript">
+			$(function() {
+				//x$('#admin_index').tabs();
+			})
+		</script>
+	</pm:head>
+	<pm:body>
+		<div id="admin_index">
+		<div class="navbar">
+			<div class="navbar-inner">
+			<a class="brand" href="#">Get Started</a>
+			<ul class="nav" id="applist">
+				<li>
+					<a href="#admin_pages" class="admin_pages">
+						<span class="icon">
+							<b class="red"></b>
+							<i style="background:url(@{typef_web_dir}@/files/static/icons/ico-pages.png) center center no-repeat;"></i>
+						</span>
+						<span class="label">Pages</span>
+					</a>
+				</li>
+				<pm:if expr="allow(typef_web_dir . '/admin/plugins')">
+					<li>
+						<a href="#admin_plugins" class="admin_plugins">
+							<span class="icon">
+								<b class="blue"></b>
+								<i style="background:url(@{typef_web_dir}@/files/static/icons/ico-plugins.png) center center no-repeat;"></i>
+							</span>
+							<span class="label">Plugins</span>
+						</a>
+					</li>
+				</pm:if>
+				<pm:if expr="allow(typef_web_dir . '/admin/config')">
+					<li>
+						<a href="#admin_settings" class="admin_settings">
+							<span class="icon">
+								<b class="green"></b>
+								<i style="background:url(@{typef_web_dir}@/files/static/icons/ico-app-default.png) center center no-repeat;"></i>
+							</span>
+							<span class="label">Settings</span>
+						</a>
+					</li>
+				</pm:if>
+				<pm:loop name="admin_panels" as="panel" sort="name" cycle="purple,yellow,orange,red,blue,green">
+					<li>
+						<a href="#admin_@{replace(' ', '_', panel->name)}@" class="admin_@{lowercase(replace(' ', '_', panel->name))}@">
+							<span class="icon">
+								<b class="@{cycle}@"></b>
+								<i style="background:url(@{typef_web_dir}@/files/static/icons/ico-@{lowercase(panel->name)}@.png) center center no-repeat;"></i>
+							</span>
+							<span class="label">@{panel->name}@</span>
+						</a>
+					</li>
+				</pm:loop>
+			</ul>
+			</div>
+		</div>
+	
+		<div id="sub-nav">
+			<div id="admin_pages">
+					<p>
+						<a href="~/admin/pages/add">New Page</a>
+					</p>
+					<ul pm:if="admin_pages" class="pages">
+						<pm:loop name="admin_pages" as="page" sort="nickname">
+							<li>
+								<h3>
+									@{page->nickname}@
+								</h3>
+								<p>
+									<small>@{page->application}@</small>
+								</p>
+								<p>
+									<small><a href="@{typef_web_dir}@@{page->uri}@">@{typef_web_dir}@@{page->uri}@</a></small>
+								</p>
+								<p>
+									<a pm:if="allow(page->admin)" href="@{page->admin}@?pageid=@{page->pageid}@">Content</a>
+									<a pm:if="allow(typef_web_dir . '/admin/pages')" href="@{typef_web_dir}@/admin/pages/edit?pageid=@{page->pageid}@">Settings</a>
+									<pm:postlink href="~/admin/pages/delete?pageid=@{page->pageid}@&amp;post_redir=@{typef_request_uri}@" confirm="Are you sure you want to delete @{page->nickname}@? Click OK to confirm.">Delete</pm:postlink>
+								</p>
+							</li>
+						</pm:loop>
+					</ul>
+
+			</div>
+			<div id="admin_plugins" pm:if="allow(typef_web_dir . '/admin/plugins')">
+				<p>
+					<a href="~/admin/plugins/add">New Plugin</a>
+				</p>
+				<p>
+					<a href="~/admin/plugins">Manage Layout</a>
+				</p>
+				<pm:if expr="count(admin_plugins)">
+					<ul>
+						<pm:loop name="admin_plugins">
+							<li>
+								<a href="~/admin/plugins/edit?plugid=@{plugid}@">@{name}@ <small>(@{plug}@)</small></a>
+							</li>
+						</pm:loop>
+					</ul>
+				</pm:if>
+			</div>
+			<pm:loop name="admin_panels" as="panel">
+				<div id="admin_@{replace(' ', '_', panel->name)}@">
+					<pm:include template="@{panel->template}@" />
+				</div>
+			</pm:loop>
+			<div pm:if="allow(typef_web_dir . '/admin/config')" id="admin_settings">
+				<pm:include template="/admin/config/panel.inc.html" />
+			</div>
+		</div>
+		</div>
+		<pm:loop name="admin_panels" as="panel">
+			<script>
+				$(".open").click(function () {
+					$("#admin_@{replace(' ', '_', panel->name)}@").animate(
+						{ left: -200 }, {
+						duration: 'slow',
+						easing: 'easeOutBounce'
+					});
+					$(this).removeClass('open');
+				});
+
+				$("a.admin_@{lowercase(replace(' ', '_', panel->name))}@").click(function () {
+					$("#admin_@{replace(' ', '_', panel->name)}@").animate(
+						{ left: 245 }, {
+						duration: 'slow',
+						easing: 'easeInBounce'
+					});
+					$(this).addClass('open');
+				});
+			</script>
+		</pm:loop>
+
+	</pm:body>
+</pm:html>
+
+
+
+
+
+
+
+
+
+
+
+
+

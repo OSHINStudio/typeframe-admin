@@ -1,0 +1,17 @@
+<pm:html>
+<pm:head>
+	<title>@{typef_title}@ - Admin - Add User Group</title>
+</pm:head>
+<pm:body>
+	<h2>
+		Add User Group
+	</h2>
+	<pm:loop name="usergroup">
+	<form action="@{typef_web_dir}@/admin/usergroups/add" method="post">
+		<input type="hidden" name="cmd" value="usergroup-add" />
+		<pm:include template="/admin/usergroups/usergroupform.inc.html" />
+		<input type="submit" name="btn" value="Add" />
+	</form>
+	</pm:loop>
+</pm:body>
+</pm:html>

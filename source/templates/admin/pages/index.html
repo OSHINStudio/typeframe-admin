@@ -1,0 +1,53 @@
+<pm:html xmlns:pm="http://typeframe.com/pagemill">
+	<pm:head>
+		<title>Admin - Pages</title>
+		@{page_title = 'Pages'}@
+	</pm:head>
+	<pm:body>
+
+		<pm:if expr="count(pages)">
+		
+			<h2>Pages <a href="~a/add" class="btn btn-success"><i class="iconic-plus"></i> New Page</a></h2>
+			
+			<pm:include template="pagination.inc.html" />
+			<table class="table table-bordered">
+				<tr><th>Nickname</th><th>Address</th><th>Application</th><th>&nbsp;</th></tr>
+				<pm:loop name="pages" cycle="odd,even">
+					<tr class="@{cycle}@ post">
+						<td>@{nickname}@</td>
+						@{page_link = ('http://' . typef_host . typef_web_dir . uri)}@
+						@{base      = (applications[application]->base ? applications[application]->base : applications[application . ' Admin']->base)}@
+						@{app_link  = (base ? ('http://' . typef_host . typef_web_dir . base) : null)}@
+						<td><a href="@{page_link}@" title="@{page_link}@">@{uri}@</a></td>
+						<td><pm:if expr="app_link"><a href="@{app_link}@" title="Jump to application '@{application}@'">@{application}@</a></pm:if><pm:else>@{application}@</pm:else></td>
+						<td class="toolbar" style="width:100px">
+							<div class="btn-group">
+								
+									<a href="~a/edit?pageid=@{pageid}@" class="btn btn-small">Manage Page</a>
+								<a class="btn dropdown-toggle btn-small" data-toggle="dropdown" href="#">
+									<span class="caret"></span>
+								</a>
+								<ul class="dropdown-menu pull-right">
+
+									<li><pm:if expr="admin"><a href="@{admin}@?pageid=@{pageid}@"><i class="iconic-pen-alt2"></i> Page Content</a></pm:if></li>
+									<li><a href="~a/edit?pageid=@{pageid}@"><i class="iconic-cog"></i> Manage Settings</a></li>
+																		<li><a href="@{page_link}@" title="@{page_link}@" target="_blank"><i class="iconic-new-window"></i> View Page</a></li>
+									<li class="divider"></li>
+									<li style="text-align:center; padding-bottom: 6px;"><pm:postlink href="~a/delete?pageid=@{pageid}@" confirm="Are you sure you want to delete @{nickname ? nickname : uri}@?  Click OK to confirm." class="btn btn-danger" style="color:#fff;"><i class="iconic-x"></i> Delete Page</pm:postlink></li>
+								</ul>
+							</div>
+						</td>
+					</tr>
+				</pm:loop>
+			</table>
+			<pm:include template="pagination.inc.html" />
+		
+		</pm:if>
+		<pm:else>
+			<div class="alert alert-block">
+			<h4>Oh no!</h4>
+			Your site has no pages!
+			</div>
+		</pm:else>
+	</pm:body>
+</pm:html>

@@ -1,0 +1,57 @@
+<pm:html xmlns:pm="http://typeframe.com/pagemill">
+	<pm:head>
+		<title>@{typef_title}@ - Admin - @{user->userid ? 'Edit' : 'Add'}@ User</title>
+		<pm:if expr="!user->userid">
+			<pm:scriptonce src="~fs/jquery/jquery-min.js" />
+			<pm:scriptonce src="~fs/jquery/jquery-ui.js" />
+			<script>var typef_app_dir = '@{typef_app_dir}@';</script>
+			<pm:scriptonce src="~fs/js/user.add.js" />
+		</pm:if>
+	</pm:head>
+	<pm:body>
+		<h2><a href="~a/">Users</a> &gt; @{user->userid ? 'Edit' : 'Add'}@</h2>
+		<p pm:loop="errors error" class="error">@{error->message}@</p>
+		<form action="~a/@{user->userid ? 'edit' : 'add'}@" method="post">
+			<input pm:if="user->userid" type="hidden" name="userid" value="@{user->userid}@" />
+			<table class="fieldset">
+				<tr pm:if="!ignore-username">
+					<td><label for="username">User Name</label></td>
+					<td><input type="text" name="username" value="@{user->username}@" id="username" class="text" /></td>
+				</tr>
+				<tr>
+					<td><label for="email">Email</label></td>
+					<td><input type="text" name="email" id="email" value="@{user->email}@" class="text" /></td>
+				</tr>
+				<tr>
+					<td><label for="password">Password</label></td>
+					<td><input type="password" name="password" id="password" class="text" />
+						<small pm:if="userid">(Leave blank to keep current password)</small></td>
+				</tr>
+				<tr>
+					<td><label for="password2">Confirm Password</label></td>
+					<td><input type="password" name="password2" id="password2" class="text" /></td>
+				</tr>
+				<tr>
+					<td><label for="firstname">First Name</label></td>
+					<td><input type="text" name="firstname" id="firstname" value="@{user->firstname}@" class="text" /></td>
+				</tr>
+				<tr>
+					<td><label for="lastname">Last Name</label></td>
+					<td><input type="text" name="lastname" id="lastname" value="@{user->lastname}@" class="text" /></td>
+				</tr>
+				<tr>
+					<td><label for="usergroupid">User Group</label></td>
+					<td><pm:select name="usergroupid" selected="@{user->usergroupid}@">
+							<option pm:loop="usergroups usergroup" value="@{usergroup->usergroupid}@">@{usergroup->usergroupname}@</option>
+						</pm:select></td>
+				</tr>
+				<tr>
+					<td>Confirmed</td>
+					<td><input type="checkbox" name="confirmed" value="1"><pm:attribute
+						name="checked"><pm:if expr="user->confirmed">checked</pm:if></pm:attribute></input></td>
+				</tr>
+			</table>
+			<input type="submit" value="@{user->userid ? 'Update' : 'Add'}@" class="submit" />
+		</form>
+	</pm:body>
+</pm:html>

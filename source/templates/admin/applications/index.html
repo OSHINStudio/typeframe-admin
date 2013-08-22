@@ -1,0 +1,54 @@
+<pm:html xmlns:pm="http://typeframe.com/pagemill">
+	<pm:head>
+		<title>Admin - Applications</title>
+	</pm:head>
+	<pm:body>
+		<h2>
+			Applications
+		</h2>
+		<table class="tabular">
+			<tr>
+				<th>
+					Application
+				</th>
+				<th>
+					Status
+				</th>
+				<th>
+					Pages
+				</th>
+			</tr>
+			<pm:loop name="applications" cycle="odd,even">
+				<tr class="@{cycle}@">
+					<td>
+						@{name}@
+					</td>
+					<td>
+						<pm:if expr="map == 'hard'">
+							<span style="color: black;">Mandatory</span>
+						</pm:if>
+						<pm:if expr="map != 'hard'">
+							<pm:if expr="count(pages)">
+								<span style="color: green;">Active</span>
+							</pm:if>
+							<pm:else>
+								<span style="color: red;">Inactive</span>
+								<sup><pm:postlink confirm="You are about to activate the @{name}@ application with its default base URI.  Click OK to confirm."><pm:attribute name="href">@{typef_app_base}@?cmd=application-install&amp;application=<pm:eval expr="urlencode(name)" /></pm:attribute>!</pm:postlink></sup>
+							</pm:else>
+						</pm:if>
+					</td>
+					<td>
+						<pm:if expr="count(pages)">
+							<pm:loop name="pages" delimiter="&lt;br /&gt;">
+								<a href="@{uri}@" target="_blank">@{uri}@</a>
+							</pm:loop>
+						</pm:if>
+						<pm:else>
+							&nbsp;
+						</pm:else>
+					</td>
+				</tr>
+			</pm:loop>
+		</table>
+	</pm:body>
+</pm:html>

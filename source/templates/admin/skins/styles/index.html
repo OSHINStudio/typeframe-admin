@@ -1,0 +1,40 @@
+<pm:html>
+	<pm:head>
+		<title>Admin - Skins - Styles</title>
+		<pm:scriptonce type="text/javascript" src="@{typef_web_dir}@/files/static/js/prototype.js"></pm:scriptonce>
+	</pm:head>
+	<pm:body>
+		<h2>
+			Styles
+		</h2>
+		<form id="editform" action="@{typef_app_base}@edit" method="get">
+			Skin:
+			<pm:select id="skinselect" name="skin">
+				<option value=""></option>
+				<pm:loop name="skins">
+					<option value="@{skin}@">@{skin}@</option>
+				</pm:loop>
+			</pm:select>
+			Stylesheet:
+			<pm:select id="stylesheetselect" name="stylesheet">
+				<option value=""></option>
+				<pm:loop name="stylesheets">
+					<option value="@{stylesheet}@">@{stylesheet}@</option>
+				</pm:loop>
+			</pm:select>
+			<input type="submit" name="btn" value="Edit" />
+		</form>
+		<script type="text/javascript">
+			Event.observe('editform', 'submit', function(evt) {
+				if ( (!$F('skinselect')) || (!$F('stylesheetselect')) ) {
+					alert('You need to select both a skin and a stylesheet.');
+					Event.stop(evt);
+				}
+			});
+		</script>
+		<p>
+			<small>This application lists all stylesheets that have been registered with applications.
+			Note that some pages and/or templates may reference unregistered stylesheets.</small>
+		</p>
+	</pm:body>
+</pm:html>

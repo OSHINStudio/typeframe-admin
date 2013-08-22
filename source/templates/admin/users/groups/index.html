@@ -1,0 +1,20 @@
+<pm:html xmlns:pm="http://typeframe.com/pagemill">
+	<pm:head>
+		<title>@{typef_title}@ - Admin - User Groups</title>
+	</pm:head>
+	<pm:body>
+		<h2><a href="~a/">Users</a> &gt; User Groups</h2>
+		<p><a href="~a/groups/add">Add User Group</a></p>
+		<table>
+			<tr><th>Group Name</th><th>&nbsp;</th></tr>
+			<tr pm:loop="usergroups">
+				<td>@{usergroupname}@</td>
+				<td><a href="~a/groups/edit?usergroupid=@{usergroupid}@"><img src="@{skin_path('/buttons/edit.png')}@" alt="Edit" title="Edit" /></a>
+					<pm:postlink href="~a/groups/delete?usergroupid=@{usergroupid}@"
+						confirm="Are you sure you want to delete this user group?"><img
+						src="@{skin_path('/buttons/delete.png')}@" alt="Delete" title="Delete" /></pm:postlink>
+				</td>
+			</tr>
+		</table>
+	</pm:body>
+</pm:html>

@@ -1,0 +1,33 @@
+#admin_plugins {
+
+	float: left;
+}
+#admin_skin {
+
+	float: left;
+}
+#admin_wrapper {
+	overflow: hidden;
+}
+.dropping {
+	color: green;
+}
+.plugdef {
+	cursor: e-resize;
+}
+.socketname {
+	font-size: 120%;
+	font-weight: bold;
+}
+li.socketdef {
+	margin-bottom: 1em;
+}
+li.socketdef form {
+	margin: 0;
+}
+li.socketdef ul {
+	padding-left: 1em;
+}
+li.socketdef ul li {
+	cursor: ns-resize;
+}

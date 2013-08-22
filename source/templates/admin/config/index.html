@@ -1,0 +1,27 @@
+<pm:html xmlns:pm="http://typeframe.com/pagemill">
+	<pm:head>
+		<title>Admin - Config</title>
+	</pm:head>
+	<pm:body>
+		<h2>
+			Config
+		</h2>
+		<pm:if expr="count(configs)">
+			<p>
+				Select a set of configuration options from the list below.
+			</p>
+			<ul>
+			<pm:loop name="configs">
+				<li>
+					<a><pm:attribute name="href">@{typef_app_base}@edit?config=<pm:eval expr="urlencode(name)" /></pm:attribute>@{name}@</a>
+				</li>
+			</pm:loop>
+			</ul>
+		</pm:if>
+		<pm:else>
+			<p>
+				There are no configuration sets defined in the registry.
+			</p>
+		</pm:else>
+	</pm:body>
+</pm:html>

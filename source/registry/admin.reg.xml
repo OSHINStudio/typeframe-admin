@@ -1,0 +1,19 @@
+<registry>
+	<application name="Config" base="/admin/config" map="hard" icon="ico-config.png" category="System" />
+	<application name="Pages Admin" title="Pages" base="/admin/pages" icon="ico-pages.png" map="hard" category="Site">
+		<toolbar>
+			<item label="New Page" path="/admin/pages/add" toolbar="1" />
+		</toolbar>
+		<config name="Pages">
+			<item name="PAGES_DEFAULT_APPLICATION" caption="Default Page Application" type="text" default="" />
+		</config>
+	</application>
+	<application name="Admin" base="/admin" map="hard" handler="Typeframe_Application_Handler_Admin">
+		<plugin name="Admin Bar" class="Plugin_AdminBar" />
+		<plugin name="Admin Tree" class="Plugin_AdminTree" />
+		<!--<trigger when="before" script="/debug.php" path="*" />-->
+	</application>
+	<!--<application name="Applications Admin" title="Applications" icon="applications.gif" base="/admin/applications" map="hard" category="Advanced" />-->
+	<application name="Log Admin" title="Log" base="/admin/log" icon="ico-log.png" map="hard" category="System" />
+	<application name="Plugins Admin" title="Plugins" base="/admin/plugins" icon="ico-plugins.png" map="hard" category="CMS" />
+</registry>

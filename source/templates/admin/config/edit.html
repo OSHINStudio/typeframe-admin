@@ -1,0 +1,46 @@
+<pm:html xmlns:pm="http://typeframe.com/pagemill">
+	<pm:head>
+		<title>Config</title>
+	</pm:head>
+	<pm:body>
+		<h2>
+			@{config->name}@ Config
+		</h2>
+		<form action="" method="post">
+			<input type="hidden" name="cmd" value="config-update" />
+			<input type="hidden" name="config" value="@{config->name}@" />
+			<table>
+				<tr>
+					<th>
+						Option
+					</th>
+					<th>
+						Value
+					</th>
+				</tr>
+				<pm:loop name="config->items">
+				<tr>
+					<td>
+						<label for="config_@{name}@">
+							@{caption}@
+						</label>
+					</td>
+					<td>
+						<pm:if expr="type == 'text'"><input id="config_@{name}@" type="text" name="@{name}@" value="@{value}@" /></pm:if>
+						<pm:if expr="type == 'textarea'"><textarea id="config_@{name}@" name="@{name}@">@{value}@</textarea></pm:if>
+						<pm:if expr="type == 'boolean'"><pm:checkbox id="config_@{name}@" name="@{name}@" value="1" checked="@{value}@" /></pm:if>
+						<pm:if expr="type == 'select'">
+							<select id="config_@{name}@" name="@{name}@" pm:selected="@{value}@">
+								<pm:loop name="options">
+									<option value="@{value}@">@{caption}@</option>
+								</pm:loop>
+							</select>
+						</pm:if>
+					</td>
+				</tr>
+				</pm:loop>
+			</table>
+			<input type="submit" name="btn" value="Update" class="submit" />
+		</form>
+	</pm:body>
+</pm:html>

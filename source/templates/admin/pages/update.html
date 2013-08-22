@@ -1,0 +1,106 @@
+<pm:html xmlns:pm="http://typeframe.com/pagemill">
+	<pm:head>
+		<title>Admin - Pages - @{pageid ? 'Edit' : 'Add'}@</title>
+	</pm:head>
+	<pm:body>
+		<h2>@{pageid ? 'Edit' : 'Add'}@ Page@{page->nickname ? ': ' . page->nickname : ''}@</h2>
+		<div class="error" pm:if="count(errors)">
+			<p pm:loop="errors">@{message}@</p>
+		</div>
+		<form id="pageform" action="~a/@{pageid ? 'edit' : 'add'}@" method="post" enctype="multipart/form-data">
+			<input type="hidden" name="post_redir" value="@{globals->request->post_redir}@" />
+			<input pm:if="!pageid" type="hidden" name="cmd" value="page-add" />
+			<input pm:if="pageid" type="hidden" name="pageid" value="@{pageid}@" />
+			<table class="fieldset">
+				<tr>
+					<td>URI</td>
+					<td><input id="pageuri" type="text" name="uri" value="@{page->uri}@" /> <sub id="page-url" class="text"></sub></td>
+				</tr>
+				<tr>
+					<td>Nickname</td>
+					<td><input type="text" name="nickname" value="@{page->nickname}@" class="text" /></td>
+				</tr>
+				<tr>
+					<td>Application</td>
+					<td><pm:select name="application" id="pageform-application" selected="@{page->application ? page->application : application}@">
+							<option pm:if="!page->application" value="">(Select one)</option>
+							<pm:loop name="applications">
+								<option value="@{application}@">@{application}@</option>
+							</pm:loop>
+						</pm:select></td>
+				</tr>
+				<tr>
+					<td>Skin</td>
+					<td><pm:select id="skin" name="skin" selected="@{page->skin}@">
+							<option value="">Site Default (@{typef_site_skin}@)</option>
+							<option pm:loop="skins" value="@{skin}@">@{skin}@</option>
+						</pm:select></td>
+				</tr>
+				<tr>
+					<td>Permitted Groups</td>
+					<td><select name="usergroupid[]" size="4" multiple ="multiple">
+							<option pm:loop="usergroups" value="@{usergroupid}@"><pm:attribute
+								name="selected"><pm:if expr="selected">selected</pm:if></pm:attribute>@{usergroupname}@</option>
+						</select></td>
+				</tr>
+				<tr pm:if="typef_ent">
+					<td>Display On @{typef_ent_children_name}@</td>
+					<td><pm:select name="rules" selected="@{rules}@">
+							<option value="">All @{typef_ent_children_name}@ And Main</option>
+							<option value="child:0">Only Main</option>
+							<option value="!child:0;child:*">Only @{typef_ent_children_name}@</option>
+						</pm:select></td>
+				</tr>
+			</table>
+			<div id="settings">
+				<pm:include pm:if="settingstemplate" template="@{settingstemplate}@" />
+			</div>
+			<pm:loop name="extras">
+				<pm:include template="@{template}@" />
+			</pm:loop>
+			<input type="submit" name="btn" value="@{pageid ? 'Update' : 'Add'}@" />
+		</form>
+		<pm:scriptonce src="~fs/jquery/jquery.js"></pm:scriptonce>
+		<script>
+			/* <![CDATA[ */
+			$(function() {
+				$('#pageform').submit(function(evt) {
+					if ($(this).data('loading')) {
+						evt.preventDefault();
+					}
+				});
+				$('#pageform input[type="submit"]').hide();
+				$('#pageform').data('loading', true);
+				$('#settings').html('<p><img src="@{typef_web_dir}@/files/static/images/ajax-loader.gif" alt="Loading" /> Loading settings...</p>');
+				$('#settings').load(
+					'@{typef_web_dir}@/admin/pages/settings',
+					{
+						application: $('#pageform-application').val(),
+						pageid: '@{pageid}@'
+					},
+					function(data) {
+						$('#pageform input[type="submit"]').show();
+						$('#pageform').data('loading', false);
+					}
+				);
+			});
+			$('#pageform-application').change(function(evt) {
+				$('#pageform input[type="submit"]').hide();
+				$('#pageform').data('loading', true);
+				$('#settings').html('<p><img src="@{typef_web_dir}@/files/static/images/ajax-loader.gif" alt="Loading" /> Loading settings...</p>');
+				$('#settings').load(
+					'@{typef_web_dir}@/admin/pages/settings',
+					{
+						application: $('#pageform-application').val(),
+						pageid: '@{pageid}@'
+					},
+					function() {
+						$('#pageform input[type="submit"]').show();
+						$('#pageform').data('loading', false);
+					}
+				);
+			});
+			/* ]]> */
+		</script>
+	</pm:body>
+</pm:html>

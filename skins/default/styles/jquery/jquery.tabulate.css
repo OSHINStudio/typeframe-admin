@@ -1,0 +1,13 @@
+.tabulate {
+	margin: 1em 0 1em 0;
+	padding: 0;
+}
+.tabulate a {
+	display: inline;
+	margin: 0 1em 0 0;
+	padding: 0;
+}
+
+.tabulate a.selected {
+	font-weight: bold;
+}

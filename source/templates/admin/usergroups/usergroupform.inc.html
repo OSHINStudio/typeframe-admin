@@ -1,0 +1,41 @@
+<table class="fieldset">
+	<tr>
+		<td>
+			Group Name
+		</td>
+		<td>
+			<input type="text" name="usergroupname" value="@{usergroupname}@" />
+		</td>
+	</tr>
+	<pm:if expr="count(applications)">
+	<tr>
+		<td>
+			Admin Access
+		</td>
+		<td>
+			<select id="usergroup-admin" name="admin[]" size="10" multiple="multiple">
+				<pm:loop name="applications">
+					<pm:if expr="selected">
+						<option value="@{application}@" selected="selected">@{title}@</option>
+					</pm:if>
+					<pm:if expr="!selected">
+						<option value="@{application}@">@{title}@</option>
+					</pm:if>
+				</pm:loop>
+			</select>
+			<div>
+				<a href="#" onclick="return clearAdmin();">Clear All</a>
+				<script language="javascript" type="text/javascript">//<![CDATA[
+				function clearAdmin() {
+					var sel = document.getElementById('usergroup-admin');
+					for (var i = 0; i < sel.length; i++) {
+						sel.options[i].selected = false;
+					}
+					return false;
+				}
+				//]]></script>
+			</div>
+		</td>
+	</tr>
+	</pm:if>
+</table>

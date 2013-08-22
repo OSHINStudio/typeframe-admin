@@ -1,0 +1,9 @@
+<div id="settings">
+	<h3>Additional Settings</h3>
+	<pm:if expr="settingstemplate">
+		<pm:include template="@{settingstemplate}@" />
+	</pm:if>
+	<pm:else>
+		<p class="alert">No additional settings are required for this application.</p>
+	</pm:else>
+</div>
